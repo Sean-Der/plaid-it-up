@@ -77,7 +77,23 @@ func CreateTransfer(src_account_id int64, dst_account_id int64, amount int64) (i
 		return
 	}
 
+	result, err := tx.NamedExec(`INSERT INTO transfer(amount, src_account_id, dst_account_id) VALUES (:amount, :src_account_id, :dst_account_id)`,
+		map[string]interface{}{
+			"amount":         amount,
+			"src_account_id": src_account_id,
+			"dst_account_id": dst_account_id,
+		})
+
 	err = tx.Commit()
+	if err != nil {
+		return
+	}
+
+	id, err = result.LastInsertId()
+	if err != nil {
+		return
+	}
+
 	return
 }
 

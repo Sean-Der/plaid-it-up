@@ -28,19 +28,19 @@ CREATE TABLE transfer (
 );`
 
 type Customer struct {
-	Id   int64  `db:"id" json:"id"`
+	Id   int64  `db:"id"   json:"id"`
 	Name string `db:"name" json:"name"`
 }
 
 type Account struct {
-	Id       int64 `db:"id"`
-	Balance  int64 `db:"balance"`
-	Customer int64 `db:"customer_id"`
+	Id       int64 `db:"id"          json:"id"`
+	Balance  int64 `db:"balance"     json:"balance"`
+	Customer int64 `db:"customer_id" json:"customer_id"`
 }
 
 type Transfer struct {
-	Id         int64 `db:"id"`
-	Amount     int64 `db:"amount"`
-	SrcAccount int64 `db:"src_account_id"`
-	DstAccount int64 `db:"dst_account_id"`
+	Id         int64 `db:"id"             json:"id"`
+	Amount     int64 `db:"amount"         json:"amount"`
+	SrcAccount int64 `db:"src_account_id" json:"src_account_id"`
+	DstAccount int64 `db:"dst_account_id" json:"dst_account_id"`
 }

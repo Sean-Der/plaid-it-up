@@ -36,6 +36,25 @@ func customerHandler(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(customer)
 		}
 	case "POST":
+		var customer db.Customer
+		decoder := json.NewDecoder(r.Body)
+		if err := decoder.Decode(&customer); err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		id, err := db.CreateCustomer(customer.Name)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		createdCustomer, err := db.GetCustomer(id)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		json.NewEncoder(w).Encode(createdCustomer)
 	default:
 		http.Error(w, "Unhandled HTTP Method Type", 500)
 	}
@@ -67,6 +86,25 @@ func accountHandler(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(account)
 		}
 	case "POST":
+		var account db.Account
+		decoder := json.NewDecoder(r.Body)
+		if err := decoder.Decode(&account); err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		id, err := db.CreateAccount(account.Customer, account.Balance)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		createdAccount, err := db.GetAccount(id)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		json.NewEncoder(w).Encode(createdAccount)
 	default:
 		http.Error(w, "Unhandled HTTP Method Type", 500)
 	}
@@ -98,6 +136,25 @@ func transferHandler(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(transfer)
 		}
 	case "POST":
+		var transfer db.Transfer
+		decoder := json.NewDecoder(r.Body)
+		if err := decoder.Decode(&transfer); err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		id, err := db.CreateTransfer(transfer.SrcAccount, transfer.DstAccount, transfer.Amount)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		createdTransfer, err := db.GetTransfer(id)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		json.NewEncoder(w).Encode(createdTransfer)
 	default:
 		http.Error(w, "Unhandled HTTP Method Type", 500)
 	}
