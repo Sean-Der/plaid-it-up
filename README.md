@@ -30,6 +30,7 @@
 
 ##API
 There exists an endpoint for each structure at a path that matches the name of the target.
+So to work with a transfer you would access it via `$host:$port/transfer`
 
 Each API provides a GET and a POST
 
@@ -41,7 +42,9 @@ empty/missing field will just create the structure with the default value. ('' f
 
 ##Running
 `go get github.com/sean-der/plaid-it-up`
+
 `cd $GOPATH/sean-der/plaid-it-up`
+
 `go run main.go`
 
 The service runs on port 4321 by default, and at this time can only be changed by editing main.go (but could easily be an argument)
