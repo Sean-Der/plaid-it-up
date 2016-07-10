@@ -45,12 +45,12 @@ func CreateAccount(customer_id int64, balance int64) (id int64, err error) {
 }
 
 func CreateTransfer(src_account_id int64, dst_account_id int64, amount int64) (id int64, err error) {
-	src_account, err := getAccount(src_account_id)
+	src_account, err := GetAccount(src_account_id)
 	if err != nil {
 		return
 	}
 
-	dst_account, err := getAccount(dst_account_id)
+	dst_account, err := GetAccount(dst_account_id)
 	if err != nil {
 		return
 	}
@@ -81,9 +81,36 @@ func CreateTransfer(src_account_id int64, dst_account_id int64, amount int64) (i
 	return
 }
 
-func getAccount(id int64) (account *Account, err error) {
+func GetAccount(id int64) (account *Account, err error) {
 	account = &Account{}
 	err = db.Get(account, "SELECT * from account WHERE id = $1", id)
+	return
+}
+
+func GetAccounts() (accounts []*Account, err error) {
+	err = db.Select(&accounts, "SELECT * from account")
+	return
+}
+
+func GetCustomer(id int64) (customer *Customer, err error) {
+	customer = &Customer{}
+	err = db.Get(customer, "SELECT * from customer WHERE id = $1", id)
+	return
+}
+
+func GetCustomers() (customers []*Customer, err error) {
+	err = db.Select(&customers, "SELECT * from customer")
+	return
+}
+
+func GetTransfer(id int64) (transfer *Transfer, err error) {
+	transfer = &Transfer{}
+	err = db.Get(transfer, "SELECT * from transfer WHERE id = $1", id)
+	return
+}
+
+func GetTransfers() (transfers []*Transfer, err error) {
+	err = db.Select(&transfers, "SELECT * from transfer")
 	return
 }
 

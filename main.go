@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/sean-der/plaid-it-up/db"
+	"github.com/sean-der/plaid-it-up/http"
 )
 
 func main() {
@@ -32,4 +33,5 @@ func main() {
 		log.Fatal(err)
 	}
 
+	http.StartServer(":4321")
 }

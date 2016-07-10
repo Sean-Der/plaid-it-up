@@ -28,8 +28,8 @@ CREATE TABLE transfer (
 );`
 
 type Customer struct {
-	Id   int64  `db:"id"`
-	Name string `db:"name"`
+	Id   int64  `db:"id" json:"id"`
+	Name string `db:"name" json:"name"`
 }
 
 type Account struct {
