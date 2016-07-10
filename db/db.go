@@ -130,6 +130,16 @@ func GetTransfers() (transfers []*Transfer, err error) {
 	return
 }
 
+func GetTransfersByDstAccountId(dst_account_id int64) (transfers []*Transfer, err error) {
+	err = db.Select(&transfers, "SELECT * from transfer WHERE dst_account_id = $1", dst_account_id)
+	return
+}
+
+func GetTransfersBySrcAccountId(src_account_id int64) (transfers []*Transfer, err error) {
+	err = db.Select(&transfers, "SELECT * from transfer WHERE src_account_id = $1", src_account_id)
+	return
+}
+
 func updateAccount(account *Account, tx *sqlx.Tx) (err error) {
 	_, err = tx.NamedExec(`UPDATE account set balance = :balance WHERE id = :id`,
 		map[string]interface{}{

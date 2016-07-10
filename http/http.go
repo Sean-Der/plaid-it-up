@@ -114,14 +114,7 @@ func transferHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		idStr := r.URL.Query().Get("id")
-		if len(idStr) == 0 {
-			transfers, err := db.GetTransfers()
-			if err != nil {
-				http.Error(w, err.Error(), 500)
-				return
-			}
-			json.NewEncoder(w).Encode(transfers)
-		} else {
+		if len(idStr) != 0 {
 			id, err := strconv.ParseInt(idStr, 10, 0)
 			if err != nil {
 				http.Error(w, err.Error(), 500)
@@ -135,6 +128,47 @@ func transferHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			json.NewEncoder(w).Encode(transfer)
 		}
+
+		srcAccountIdStr := r.URL.Query().Get("src_account_id")
+		if len(srcAccountIdStr) != 0 {
+			srcAccountId, err := strconv.ParseInt(srcAccountIdStr, 10, 0)
+			if err != nil {
+				http.Error(w, err.Error(), 500)
+				return
+			}
+
+			transfers, err := db.GetTransfersBySrcAccountId(srcAccountId)
+			if err != nil {
+				http.Error(w, err.Error(), 500)
+				return
+			}
+			json.NewEncoder(w).Encode(transfers)
+			return
+		}
+
+		dstAccountIdStr := r.URL.Query().Get("dst_account_id")
+		if len(dstAccountIdStr) != 0 {
+			dstAccountId, err := strconv.ParseInt(dstAccountIdStr, 10, 0)
+			if err != nil {
+				http.Error(w, err.Error(), 500)
+				return
+			}
+
+			transfers, err := db.GetTransfersByDstAccountId(dstAccountId)
+			if err != nil {
+				http.Error(w, err.Error(), 500)
+				return
+			}
+			json.NewEncoder(w).Encode(transfers)
+			return
+		}
+
+		transfers, err := db.GetTransfers()
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		json.NewEncoder(w).Encode(transfers)
 	case "POST":
 		var transfer db.Transfer
 		decoder := json.NewDecoder(r.Body)
